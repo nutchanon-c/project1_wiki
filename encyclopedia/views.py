@@ -14,7 +14,7 @@ class EntryForm(forms.Form):
     #submit = forms.CharField(label="Submit")
 
 class EditForm(forms.Form):
-    content = forms.CharField()
+    content = forms.CharField(widget=forms.Textarea)
 
 def index(request):
     if request.method == "POST":
@@ -74,12 +74,11 @@ def random(request):
 def edit(request, entryName):
     #name = entryName
     content = util.get_entry(entryName)
-    form = EditForm({
-        "content": content
-        })
+    form = EditForm(initial={"content":content})
     if request.method == "POST":
-        postForm = EditForm(request.POST)
-        util.save_entry(entryName, postForm.data["content"])
+        #postForm = EditForm(request.POST)
+        #util.save_entry(entryName, postForm.data["content"])
+        util.save_entry(entryName, request.POST["new_content"])
         return entry(request, entryName)
 
 
